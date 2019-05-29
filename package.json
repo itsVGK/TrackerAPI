@@ -1,0 +1,27 @@
+{
+  "name": "trackerapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "helmet": "^3.18.0",
+    "mongoose": "^5.5.11"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsVGK/TrackerAPI.git"
+  },
+  "author": "itsVGK",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itsVGK/TrackerAPI/issues"
+  },
+  "homepage": "https://github.com/itsVGK/TrackerAPI#readme"
+}
