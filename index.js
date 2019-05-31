@@ -4,17 +4,22 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const http = require('http');
+const morgan = require('morgan');
 
 const appConfig = require('./config/appConfig');
 const app = express();
-const helmet = require('helmet');
+const handler=require('./app/middleware/appErrorHandler');
+const loggerIp=require('./app/middleware/routeLogger');
+
+app.use(morgan('dev'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }))
-app.use(cookieParser);
-app.use(helmet());
+app.use(cookieParser());
+app.use(loggerIp.logIp);
+app.use(handler.globalErrorHandler)
 
 const modelspath = './app/models';
 const routespath = './app/routes';
@@ -26,17 +31,23 @@ app.all('*', function (req, res, next) {
     next();
 });
 
-fs.readFileSync(modelspath).forEach((file) => {
-    if (~file.indexOf('.js'))
+fs.readdirSync(modelspath).forEach((file) => {
+    if (~file.indexOf('.js')) {
+        console.log(modelspath + '/' + file)
         require(modelspath + '/' + file);
+    }
 });
 
-fs.readFileSync(routespath).forEach((file) => {
+fs.readdirSync(routespath).forEach((file) => {
     if (~file.indexOf('.js')) {
+        console.log(routespath + '/' + file)
         let route = require(routespath + '/' + file);
         route.setRouter(app);
     }
 })
+
+// console.log('gng to call not found handler')
+app.use(handler.globalNotFoundHandler)
 
 const server = http.createServer(app);
 
@@ -44,11 +55,12 @@ server.listen(appConfig.port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-onError = (error) => {
+function onError(error) {
+    console.log('server on error')
+
     if (error.syscall !== 'listen') {
         throw error;
     }
-
     switch (error.code) {
         case 'EACCES':
             logger.error(error.code + ':elavated privileges required', 'serverOnErrorHandler', 10);
@@ -64,14 +76,14 @@ onError = (error) => {
     }
 }
 
-onListening = () => {
+function onListening() {
     var addr = server.address()
     var bind = typeof addr === 'string'
         ? 'pipe' + addr
         : 'port' + addr.port;
     ('Listening on ' + bind);
-
-    let db = mongoose.connect(appConfig.db.uri, { useMongoClient: true });
+    console.log('server on Listening')
+    let db = mongoose.connect(appConfig.db.uri);
 }
 
 

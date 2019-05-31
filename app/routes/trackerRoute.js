@@ -8,4 +8,6 @@ module.exports.setRouter = (app) => {
     let baseUrl = `${appConfig.apiVersion}/issue`;
 
     app.post(`${baseUrl}/login`, issueController.loginFunction);
+    console.log(`${baseUrl}/login`);
+    app.post(`${baseUrl}/signup`, issueController.signupFunction);
 }
