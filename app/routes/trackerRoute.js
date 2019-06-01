@@ -8,6 +8,21 @@ module.exports.setRouter = (app) => {
     let baseUrl = `${appConfig.apiVersion}/issue`;
 
     app.post(`${baseUrl}/login`, issueController.loginFunction);
-    console.log(`${baseUrl}/login`);
+
     app.post(`${baseUrl}/signup`, issueController.signupFunction);
+
+    app.post(`${baseUrl}/create`, issueController.createIssueFunction);
+
+    app.get(`${baseUrl}/getBy/user/:userId`, issueController.getAllIssuesByUser);
+
+    app.get(`${baseUrl}/users`, issueController.getUsersListFunction)
+
+    app.get(`${baseUrl}/issues`, issueController.getIssueListFunction)
+
+    app.get(`${baseUrl}/getBy/issue/:issueId`, issueController.getAllIssuesByIssueId);
+
+    app.post(`${baseUrl}/update/:issueId`, issueController.updateIssuebyIssueId);
+
+    app.post(`${baseUrl}/addWatch`, issueController.addUserToIssueWatchList)
+
 }
