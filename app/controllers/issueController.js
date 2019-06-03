@@ -144,7 +144,7 @@ let createIssueFunction = (req, res) => {
 
 }  //end of create function
 
-let getAllIssuesByUser = (req, res) => {
+let getAllIssuesByReportee = (req, res) => {
     IssueModel.find({ 'reporteeId': req.params.userId }, (err, issueRes) => {
         if (err) {
             res.send(response.generate(true, 'Failed to retrieve the issue Details', 400, null))
@@ -155,6 +155,19 @@ let getAllIssuesByUser = (req, res) => {
         }
     })
 } //end of getAllIssuesByUser function
+
+let getAllIssuesByAssignee = (req, res) => {
+    IssueModel.find({ 'assignee': req.params.assignee }, (err, issueRes) => {
+        console.log(req.params.assignee, issueRes)
+        if (err) {
+            res.send(response.generate(true, 'Failed to retrieve the issue Details', 400, null))
+        } else if (check.isEmpty(issueRes)) {
+            res.send(response.generate(true, 'Unable to retrieve the issue', 400, null))
+        } else {
+            res.send(response.generate(false, 'Issue Details were retrieved', 200, issueRes));
+        }
+    })
+} // get all issues by Assignee
 
 let getAllIssuesByIssueId = (req, res) => {
     IssueModel.find({ 'issueId': req.params.issueId }, (err, issueRes) => {
@@ -170,7 +183,7 @@ let getAllIssuesByIssueId = (req, res) => {
 
 let getUsersListFunction = (req, res) => {
     UserModel.find()
-        .select('-_v-_id')
+        .select('-__v-_id')
         .lean()
         .exec((err, userRes) => {
             if (err) {
@@ -178,10 +191,30 @@ let getUsersListFunction = (req, res) => {
             } else if (check.isEmpty(userRes)) {
                 res.send(response.generate(true, 'Unable to retrieve the user', 400, null))
             } else {
+                for (user in userRes) {
+                    delete userRes[user].password
+                }
                 res.send(response.generate(false, 'User Details were retrieved', 200, userRes));
             }
         })
 }// end of getUsers Function
+
+let getUserByUserId = (req, res) => {
+    UserModel.find({ 'userId': req.params.userId })
+        .exec((err, userRes) => {
+            if (err) {
+                res.send(response.generate(true, 'Failed to retrieve the user Details', 400, null))
+            } else if (check.isEmpty(userRes)) {
+                res.send(response.generate(true, 'Unable to retrieve the user', 400, null))
+            } else {
+                for (user in userRes) {
+                    delete userRes[user].password
+                }
+                res.send(response.generate(false, 'User Details were retrieved', 200, userRes));
+            }
+        })
+}// end of getUserByUserId Function
+
 
 let getIssueListFunction = (req, res) => {
     IssueModel.find()
@@ -259,8 +292,10 @@ module.exports = {
     loginFunction: loginFunction,
     signupFunction: signupFunction,
     createIssueFunction: createIssueFunction,
-    getAllIssuesByUser: getAllIssuesByUser,
+    getAllIssuesByReportee: getAllIssuesByReportee,
+    getAllIssuesByAssignee: getAllIssuesByAssignee,
     getUsersListFunction: getUsersListFunction,
+    getUserByUserId: getUserByUserId,
     getAllIssuesByIssueId: getAllIssuesByIssueId,
     getIssueListFunction: getIssueListFunction,
     updateIssuebyIssueId: updateIssuebyIssueId,

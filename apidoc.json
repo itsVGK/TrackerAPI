@@ -1,0 +1,7 @@
+{
+    "name": "Issue Tracker Application",
+    "version":"0.0.1",
+    "description":"API Documentation for Issue Tracker Application",
+    "title":"Issue Tracker API's",
+    "url":"http://localhost:3000"
+}
