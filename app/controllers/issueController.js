@@ -288,6 +288,53 @@ let addUserToIssueWatchList = (req, res) => {
         })
 }//end addUserToIssueWatchList
 
+let getWatcherforIssue = (req, res) => {
+    WatchModel.findOne({ 'issueId': req.params.issueId })
+        .exec((err, watcherList) => {
+            if (err) {
+                res.send(response.generate(true, 'unable to retreieve the watcher list', 400, null))
+            } else if (check.isEmpty(watcherList)) {
+                res.send(response.generate(true, 'No Watchers Available for the Issue', 400, null))
+            } else {
+                res.send(false, 'Watcher details were retrieved successfully', 200, watcherList);
+                ;
+            }
+        })
+}
+
+let getNotificationforUser = (req, res) => {
+    WatchModel.find({ 'userId': req.params.userId })
+        .exec((err, result) => {
+            if (err) {
+                res.send(response.generate(true, 'unable to retrieve the user', 400, null))
+            } else if (check.isEmpty()) {
+                res.send(response.generate(true, 'user not asubscribed to any watch list', 400, null))
+            } else {
+                res.send(response.generate(false, 'notifications retrieved', 200, result))
+            }
+        })
+}
+
+let updateNotificationforIssue = (req, res) => {
+    WatchModel.findOne({ 'issueId': req.params.issueId })
+        .exec((error, result) => {
+            if (error) {
+                res.send(response.generate(true, 'Issue not Availalbe', 400, null))
+            } else if (check.isEmpty) {
+                res.send(response.generate(true, 'Issue not available', 400, null))
+            } else {
+                result.isNoteAvl = 1;
+                result.save((err, isSaved) => {
+                    if (err) {
+                        res.send(response.generate(true, 'unable to save update the notifiaction', 400, null))
+                    } else {
+                        res.send(response.generate(false, 'Notification list updated', 200, isSaved))
+                    }
+                })
+            }
+        })
+}
+
 module.exports = {
     loginFunction: loginFunction,
     signupFunction: signupFunction,
@@ -299,5 +346,8 @@ module.exports = {
     getAllIssuesByIssueId: getAllIssuesByIssueId,
     getIssueListFunction: getIssueListFunction,
     updateIssuebyIssueId: updateIssuebyIssueId,
-    addUserToIssueWatchList: addUserToIssueWatchList
+    addUserToIssueWatchList: addUserToIssueWatchList,
+    getWatcherforIssue: getWatcherforIssue,
+    updateNotificationforIssue: updateNotificationforIssue,
+    getNotificationforUser: getNotificationforUser
 }    

@@ -11,6 +11,10 @@ let watchSchema = new Schema({
     usersId: {
         type: Array,
     },
+    isNoteAvl: {
+        type: Number,
+        default: 0
+    },
     count: {
         type: Number,
         default: 0
