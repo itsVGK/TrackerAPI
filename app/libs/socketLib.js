@@ -5,13 +5,14 @@ const eventEmitter = new events.EventEmitter();
 let setServer = (server) => {
 
     let io = socketio.listen(server);
-    let myIo = io.of('/chat');
+    let myIo = io.of('');
     myIo.on('connection', (socket) => {
 
-        socket.emit('verifyUser', '');
+        socket.emit('start', 'hi starting server');
 
-        socket.on('set-user', (authToken) => {
-
+        socket.on('updateChange', (data) => {
+            console.log(data)
+            socket.emit('getNote', data);
         })
     })
 }
