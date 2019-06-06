@@ -296,7 +296,7 @@ let getWatcherforIssue = (req, res) => {
             } else if (check.isEmpty(watcherList)) {
                 res.send(response.generate(true, 'No Watchers Available for the Issue', 400, null))
             } else {
-                res.send(false, 'Watcher details were retrieved successfully', 200, watcherList);
+                res.send(response.generate(false, 'Watcher details were retrieved successfully', 200, watcherList));
                 ;
             }
         })
