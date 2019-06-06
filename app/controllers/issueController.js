@@ -189,7 +189,7 @@ let getUsersListFunction = (req, res) => {
             if (err) {
                 res.send(response.generate(true, 'Failed to retrieve the user Details', 400, null))
             } else if (check.isEmpty(userRes)) {
-                res.send(response.generate(true, 'Unable to retrieve the user', 400, null))
+                res.send(response.generate(true, 'Users List is Empty', 400, null))
             } else {
                 for (user in userRes) {
                     delete userRes[user].password
@@ -224,7 +224,7 @@ let getIssueListFunction = (req, res) => {
             if (err) {
                 res.send(response.generate(true, 'Failed to retrieve the issue Details', 400, null))
             } else if (check.isEmpty(issueRes)) {
-                res.send(response.generate(true, 'Unable to retrieve the issue', 400, null))
+                res.send(response.generate(true, 'Issue List is Empty', 400, null))
             } else {
                 res.send(response.generate(false, 'Issue Details were retrieved', 200, issueRes));
             }

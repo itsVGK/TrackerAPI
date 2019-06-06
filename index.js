@@ -8,8 +8,8 @@ const morgan = require('morgan');
 
 const appConfig = require('./config/appConfig');
 const app = express();
-const handler=require('./app/middleware/appErrorHandler');
-const loggerIp=require('./app/middleware/routeLogger');
+const handler = require('./app/middleware/appErrorHandler');
+const loggerIp = require('./app/middleware/routeLogger');
 
 app.use(morgan('dev'));
 
@@ -55,6 +55,9 @@ server.listen(appConfig.port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+const socketLib = require('./app/libs/socketLib');
+const socketServer = socketLib.setServer(server);
+
 function onError(error) {
     console.log('server on error')
 
@@ -86,6 +89,10 @@ function onListening() {
     let db = mongoose.connect(appConfig.db.uri);
 }
 
+process.on('unhandledRejection', (reason, p) => {
+    console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+    // application specific logging, throwing an error, or other logic here
+});
 
 /**
  * database connection settings
