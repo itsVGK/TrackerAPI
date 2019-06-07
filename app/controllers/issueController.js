@@ -233,7 +233,7 @@ let getIssueListFunction = (req, res) => {
 
 let updateIssuebyIssueId = (req, res) => {
     req.body.modifiedOn = timeLib.now();
-    IssueModel.updateOne({ 'issueId': req.params.issueId }, req.body, { multi: true })
+    IssueModel.updateMany({ 'issueId': req.params.issueId }, req.body, { multi: true })
         .exec((err, updateRes) => {
             if (err) {
                 res.send(response.generate(true, 'Failed to update an issue', 400, null));
