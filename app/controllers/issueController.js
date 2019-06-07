@@ -12,7 +12,6 @@ const WatchModel = mongoose.model('Watch');
 
 let loginFunction = (req, res) => {
     let findUser = () => {
-        console.log('gng to finsd the user')
         return new Promise((resolve, reject) => {
             if (req.body.email) {
                 UserModel.findOne({ 'email': req.body.email })
@@ -20,7 +19,7 @@ let loginFunction = (req, res) => {
                         if (err) {
                             reject(response.generate(true, 'unable to retrieve the user details', 400, null))
                         } else if (check.isEmpty(userDetails)) {
-                            reject(response.generate(true, 'unable to retrieve the user Details', 400, null));
+                            reject(response.generate(true, 'user Details are not available', 400, null));
                         } else {
                             resolve(userDetails);
                         }
@@ -149,7 +148,7 @@ let getAllIssuesByReportee = (req, res) => {
         if (err) {
             res.send(response.generate(true, 'Failed to retrieve the issue Details', 400, null))
         } else if (check.isEmpty(issueRes)) {
-            res.send(response.generate(true, 'Unable to retrieve the issue', 400, null))
+            res.send(response.generate(true, 'No Issues were Available', 400, null))
         } else {
             res.send(response.generate(false, 'Issue Details were retrieved', 200, issueRes));
         }
@@ -158,11 +157,10 @@ let getAllIssuesByReportee = (req, res) => {
 
 let getAllIssuesByAssignee = (req, res) => {
     IssueModel.find({ 'assignee': req.params.assignee }, (err, issueRes) => {
-        console.log(req.params.assignee, issueRes)
         if (err) {
             res.send(response.generate(true, 'Failed to retrieve the issue Details', 400, null))
         } else if (check.isEmpty(issueRes)) {
-            res.send(response.generate(true, 'Unable to retrieve the issue', 400, null))
+            res.send(response.generate(true, 'No Issues were Available', 400, null))
         } else {
             res.send(response.generate(false, 'Issue Details were retrieved', 200, issueRes));
         }
@@ -174,7 +172,7 @@ let getAllIssuesByIssueId = (req, res) => {
         if (err) {
             res.send(response.generate(true, 'Failed to retrieve the issue Details', 400, null))
         } else if (check.isEmpty(issueRes)) {
-            res.send(response.generate(true, 'Unable to retrieve the issue', 400, null))
+            res.send(response.generate(true, 'No Issues were Available', 400, null))
         } else {
             res.send(response.generate(false, 'Issue Details were retrieved', 200, issueRes));
         }
@@ -233,8 +231,12 @@ let getIssueListFunction = (req, res) => {
 
 let updateIssuebyIssueId = (req, res) => {
     req.body.modifiedOn = timeLib.now();
-    IssueModel.updateMany({ 'issueId': req.params.issueId }, req.body, { multi: true })
+    console.log(req.params.issueId)
+    let options=req.body;
+    IssueModel.update({ 'issueId': req.params.issueId }, options, { multi: true })
         .exec((err, updateRes) => {
+            console.log('body ', req.body);
+            console.log('update res ', updateRes)
             if (err) {
                 res.send(response.generate(true, 'Failed to update an issue', 400, null));
             } else if (check.isEmpty(updateRes)) {
@@ -302,38 +304,6 @@ let getWatcherforIssue = (req, res) => {
         })
 }
 
-let getNotificationforUser = (req, res) => {
-    WatchModel.find({ 'userId': req.params.userId })
-        .exec((err, result) => {
-            if (err) {
-                res.send(response.generate(true, 'unable to retrieve the user', 400, null))
-            } else if (check.isEmpty()) {
-                res.send(response.generate(true, 'user not asubscribed to any watch list', 400, null))
-            } else {
-                res.send(response.generate(false, 'notifications retrieved', 200, result))
-            }
-        })
-}
-
-let updateNotificationforIssue = (req, res) => {
-    WatchModel.findOne({ 'issueId': req.params.issueId })
-        .exec((error, result) => {
-            if (error) {
-                res.send(response.generate(true, 'Issue not Availalbe', 400, null))
-            } else if (check.isEmpty) {
-                res.send(response.generate(true, 'Issue not available', 400, null))
-            } else {
-                result.isNoteAvl = 1;
-                result.save((err, isSaved) => {
-                    if (err) {
-                        res.send(response.generate(true, 'unable to save update the notifiaction', 400, null))
-                    } else {
-                        res.send(response.generate(false, 'Notification list updated', 200, isSaved))
-                    }
-                })
-            }
-        })
-}
 
 module.exports = {
     loginFunction: loginFunction,
@@ -348,6 +318,4 @@ module.exports = {
     updateIssuebyIssueId: updateIssuebyIssueId,
     addUserToIssueWatchList: addUserToIssueWatchList,
     getWatcherforIssue: getWatcherforIssue,
-    updateNotificationforIssue: updateNotificationforIssue,
-    getNotificationforUser: getNotificationforUser
 }    

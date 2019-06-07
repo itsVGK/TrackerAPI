@@ -10,9 +10,10 @@ let setServer = (server) => {
 
         socket.emit('start', 'hi starting server');
 
-        socket.on('updateChange', (data) => {
-            console.log(data)
-            socket.emit('getNote', data);
+        socket.on('updateChange', (data, issueId) => {
+            for(let id in data){
+                myIo.emit(data[id], issueId);
+            }
         })
     })
 }
