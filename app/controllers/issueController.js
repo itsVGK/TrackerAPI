@@ -14,7 +14,7 @@ let loginFunction = (req, res) => {
     let findUser = () => {
         return new Promise((resolve, reject) => {
             if (req.body.email) {
-                UserModel.findOne({ 'email': req.body.email })
+                UserModel.findOne({ 'email': req.body.email.toLowerCase() })
                     .exec((err, userDetails) => {
                         if (err) {
                             reject(response.generate(true, 'unable to retrieve the user details', 400, null))
@@ -34,13 +34,13 @@ let loginFunction = (req, res) => {
         return new Promise((resolve, reject) => {
             pwdLib.comparePwd(req.body.password, userDetails.password, (err, isMatch) => {
                 if (err) {
-                    reject(true, 'Login Failed', 400, null);
+                    reject(response.generate(true, 'Login Failed', 400, null));
                 } else if (isMatch) {
                     let userObj = userDetails.toObject();
                     delete userObj.password;
                     resolve(userObj);
                 } else {
-                    reject(true, 'Invalid Password', 400, null)
+                    reject(response.generate(true, 'Invalid Password', 400, null))
                 }
             })
         })
@@ -85,7 +85,7 @@ let signupFunction = (req, res) => {
                             userId: shortid.generate(),
                             firstName: req.body.firstName,
                             lastName: req.body.lastName,
-                            email: req.body.email,
+                            email: req.body.email.toLowerCase(),
                             password: pwdLib.hashPwd(req.body.password),
                             createdOn: timeLib.now()
                         })
@@ -203,7 +203,7 @@ let getUserByUserId = (req, res) => {
             if (err) {
                 res.send(response.generate(true, 'Failed to retrieve the user Details', 400, null))
             } else if (check.isEmpty(userRes)) {
-                res.send(response.generate(true, 'Unable to retrieve the user', 400, null))
+                res.send(response.generate(true, 'User List not available', 400, null))
             } else {
                 for (user in userRes) {
                     delete userRes[user].password
@@ -231,12 +231,9 @@ let getIssueListFunction = (req, res) => {
 
 let updateIssuebyIssueId = (req, res) => {
     req.body.modifiedOn = timeLib.now();
-    console.log(req.params.issueId)
-    let options=req.body;
+    let options = req.body;
     IssueModel.update({ 'issueId': req.params.issueId }, options, { multi: true })
         .exec((err, updateRes) => {
-            console.log('body ', req.body);
-            console.log('update res ', updateRes)
             if (err) {
                 res.send(response.generate(true, 'Failed to update an issue', 400, null));
             } else if (check.isEmpty(updateRes)) {
@@ -304,6 +301,26 @@ let getWatcherforIssue = (req, res) => {
         })
 }
 
+let updateNotificationforUser = (req, res) => {
+    UserModel.findOne({ 'userId': req.params.userId })
+        .exec((err, result) => {
+            if (err) {
+                res.send(response.generate(true, 'unable to update the notification list', 400, null))
+            } else if (check.isEmpty(result)) {
+                res.send(response.generate(true, 'User not available', 400, null))
+            } else {
+                result.noteList.push(req.body.issueId);
+                result.save((error, isSaved) => {
+                    if (error) {
+                        res.send(response.generate(true, 'unable to save the notification', 400, null));
+                    } else {
+                        res.send(response.generate(false, 'notifiaction list updated successfully', 200, isSaved))
+                    }
+                })
+            }
+        })
+}
+
 
 module.exports = {
     loginFunction: loginFunction,
@@ -318,4 +335,5 @@ module.exports = {
     updateIssuebyIssueId: updateIssuebyIssueId,
     addUserToIssueWatchList: addUserToIssueWatchList,
     getWatcherforIssue: getWatcherforIssue,
+    updateNotificationforUser: updateNotificationforUser
 }    

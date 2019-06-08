@@ -28,9 +28,13 @@ let userSchema = new Schema({
     type: String,
     default: 'passskdajakdjkadsj'
   },
-  createdOn :{
-    type:Date,
-    default:""
+  createdOn: {
+    type: Date,
+    default: ""
+  },
+  noteList: {
+    type: Array,
+    unique: true
   }
 
 })

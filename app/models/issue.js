@@ -36,11 +36,11 @@ let issueSchema=new Schema({
         default: '',
     },
     createdOn:{
-        type: Date,
+        type: String,
         default: timeLib.now(),
     },
     modifiedOn:{
-        type: Date,
+        type: String,
         default: timeLib.now(),
     }
 })

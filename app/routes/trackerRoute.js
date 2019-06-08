@@ -387,8 +387,6 @@ module.exports.setRouter = (app) => {
 
     app.get(`${baseUrl}/getWatcher/:issueId`, issueController.getWatcherforIssue);
 
-    // app.post(`${baseUrl}/updateNote/:issueId`, issueController.updateNotificationforIssue);
-
-    // app.get(`${baseUrl}/getNote/:userId`, issueController.getNotificationforUser)
+    app.post(`${baseUrl}/updateNote/forUser/:userId`, issueController.updateNotificationforUser);
 
 }
