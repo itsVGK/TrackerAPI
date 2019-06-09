@@ -32,8 +32,7 @@ let issueSchema=new Schema({
         default: '',
     },
     comments:{
-        type: String,
-        default: '',
+        type: Array
     },
     createdOn:{
         type: String,

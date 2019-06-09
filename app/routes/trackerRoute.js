@@ -384,9 +384,82 @@ module.exports.setRouter = (app) => {
 */
 
     app.post(`${baseUrl}/addWatch`, issueController.addUserToIssueWatchList)
+     /**
+* @apiGroup Watch
+* @apiVersion 0.0.1
+* @api {POST} /api/v1/issues/addWatch Add User to respective issue as Watcher
+*      
+* @apiParam {String} issueId Issue Id (params)
+* @apiParam {String} userId User Id who subscribed to the issue(params)
+* 
+* @apiSuccess {object} MyResponse Shows Error Status, Message, Http Status Code, result
+* 
+* @apiSuccessExample {json} Success-Response:
+  {
+    "error": true,
+    "message": "Watch status updated",
+    "status": 200,
+    "data": {
+        "issueId": "MNqiCYZy4",
+        "usersId": [
+            "UAX2mbtfw",
+            "Sr4QpCoOd"
+        ],
+        "isNoteAvl": 0,
+        "count": 3,
+        "_id": "5cfcc020d41e492ce449662d",
+        "__v": 2
+    }
+}
+* 
+* @apiErrorExample  {json} Error- Response
+*{
+    "error": true,
+    "message": "User Already subscribed to the issue",
+    "status": 401,
+    "data": null
+}
+*/
+
 
     app.get(`${baseUrl}/getWatcher/:issueId`, issueController.getWatcherforIssue);
 
     app.post(`${baseUrl}/updateNote/forUser/:userId`, issueController.updateNotificationforUser);
-
+    /**
+* @apiGroup  User
+* @apiVersion 0.0.1
+* @api {POST} /api/v1/issues/updateNote/forUser/:userId Add notification for user
+*      
+* @apiParam {String} userId User Id who received the notifiaciton(url parameter)
+* 
+* @apiSuccess {object} MyResponse Shows Error Status, Message, Http Status Code, result
+* 
+* @apiSuccessExample {json} Success-Response:
+ {
+    "error": false,
+    "message": "notifiaction list updated successfully",
+    "status": 200,
+    "data": {
+        "userId": "UAX2mbtfw",
+        "firstName": "asd",
+        "lastName": "asd",
+        "email": "asd@gmail.com",
+        "password": "$2b$10$Z44BhDvktwxy.fkCrF3Fg.CR3JDHiRC6t92Rr8B1wA1gr/oSsjOH6",
+        "createdOn": "2019-06-08T20:44:17.000Z",
+        "noteList": [
+            "EPc7ctaXN",
+        ],
+        "_id": "5cfc1e2132e4064928f84502",
+        "__v": 27
+    }
+}
+* 
+* @apiErrorExample  {json} Error- Response
+{
+    "error": true,
+    "message": "User not available",
+    "status": 400,
+    "data": null
+}
+*/
 }
