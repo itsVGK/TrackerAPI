@@ -1,3 +1,4 @@
+"use strict"
 /* response generation library for api */
 let generate = (err, message, status, data) => {
     let response = {
