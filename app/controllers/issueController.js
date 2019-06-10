@@ -81,6 +81,7 @@ let signupFunction = (req, res) => {
                     if (err) {
                         reject(response.generate(true, 'Unable to create the user', 400, null));
                     } else if (check.isEmpty(retrivedUser)) {
+                        console.log(req.body)
                         let newUser = new UserModel({
                             userId: shortid.generate(),
                             firstName: req.body.firstName,
@@ -89,6 +90,7 @@ let signupFunction = (req, res) => {
                             password: pwdLib.hashPwd(req.body.password),
                             createdOn: timeLib.now()
                         })
+                        console.log(newUser)
                         newUser.save((err, newUser) => {
                             if (err) {
                                 reject(response.generate(true, 'unable to save the user', 400, null))
