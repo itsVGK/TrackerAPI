@@ -7,6 +7,7 @@ const fs = require('fs');
 const http = require('http');
 const morgan = require('morgan');
 const route;
+const db;
 const appConfig = require('./config/appConfig');
 const app = express();
 const handler = require('./app/middleware/appErrorHandler');
@@ -87,7 +88,7 @@ function onListening() {
         : 'port' + addr.port;
     ('Listening on ' + bind);
     console.log('server on Listening')
-    let db = mongoose.connect(appConfig.db.uri);
+    db = mongoose.connect(appConfig.db.uri);
 }
 
 process.on('unhandledRejection', (reason, p) => {
