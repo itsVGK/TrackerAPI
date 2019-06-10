@@ -91,7 +91,7 @@ let signupFunction = (req, res) => {
                         })
                         newUser.save((err, newUser) => {
                             if (err) {
-                                reject(response.generate(true, 'unable to create the user', 400, null))
+                                reject(response.generate(true, 'unable to save the user', 400, null))
                             } else {
                                 let user = newUser.toObject();
                                 resolve(user);
