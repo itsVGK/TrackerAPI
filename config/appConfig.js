@@ -1,3 +1,4 @@
+"use strict"
 let appConfig = {};
 
 appConfig.port = 3000;
