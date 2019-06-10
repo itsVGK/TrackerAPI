@@ -1,3 +1,4 @@
+"use strict"
 const response = require('./../libs/responseLib')
 
 let errorHandler = (err,req, res, next) => {
