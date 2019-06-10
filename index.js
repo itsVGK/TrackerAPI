@@ -6,8 +6,7 @@ const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const http = require('http');
 const morgan = require('morgan');
-const route;
-const db;
+
 const appConfig = require('./config/appConfig');
 const app = express();
 const handler = require('./app/middleware/appErrorHandler');
@@ -43,7 +42,7 @@ fs.readdirSync(modelspath).forEach((file) => {
 fs.readdirSync(routespath).forEach((file) => {
     if (~file.indexOf('.js')) {
         console.log(routespath + '/' + file)
-        route = require(routespath + '/' + file);
+        let route = require(routespath + '/' + file);
         route.setRouter(app);
     }
 })
@@ -88,7 +87,7 @@ function onListening() {
         : 'port' + addr.port;
     ('Listening on ' + bind);
     console.log('server on Listening')
-    db = mongoose.connect(appConfig.db.uri);
+    let db = mongoose.connect(appConfig.db.uri);
 }
 
 process.on('unhandledRejection', (reason, p) => {
