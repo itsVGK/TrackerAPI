@@ -1,3 +1,4 @@
+"use strict"
 const response = require('./../libs/responseLib');
 const check = require('./../libs/checkLib');
 const validate = require('./../libs/paramValidationLib');
