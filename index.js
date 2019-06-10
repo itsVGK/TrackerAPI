@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const http = require('http');
 const morgan = require('morgan');
-
+const route;
 const appConfig = require('./config/appConfig');
 const app = express();
 const handler = require('./app/middleware/appErrorHandler');
@@ -41,7 +41,7 @@ fs.readdirSync(modelspath).forEach((file) => {
 fs.readdirSync(routespath).forEach((file) => {
     if (~file.indexOf('.js')) {
         console.log(routespath + '/' + file)
-        let route = require(routespath + '/' + file);
+        route = require(routespath + '/' + file);
         route.setRouter(app);
     }
 })
