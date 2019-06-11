@@ -88,11 +88,9 @@ function onListening() {
     ('Listening on ' + bind);
     console.log('server on Listening')
     let db = mongoose.connect(appConfig.db.uri, 
-        {useNewUrlParser:true})
+        {useNewUrlParser:true, useCreateIndex:true})
         .then(()=>console.log*'MongoDb Connected')
         .catch(err=>console.log(err));
-        mongoose.set('useCreateIndex', true);
-
 }
 
 process.on('unhandledRejection', (reason, p) => {
