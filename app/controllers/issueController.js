@@ -196,7 +196,7 @@ let getUsersListFunction = (req, res) => {
             } else if (check.isEmpty(userRes)) {
                 res.send(response.generate(true, 'Users List is Empty', 400, null))
             } else {
-                for (user in userRes) {
+                for (let user in userRes) {
                     delete userRes[user].password
                 }
                 res.send(response.generate(false, 'User Details were retrieved', 200, userRes));
