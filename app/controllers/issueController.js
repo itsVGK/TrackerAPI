@@ -93,8 +93,9 @@ let signupFunction = (req, res) => {
                         })
                         console.log(newUser)
                         newUser.markModified();
-                        newUser.save((err, newUser) => {
-                            if (err) {
+                        newUser.save((error, newUserRet) => {
+                            console.log(error, newUserRet)
+                            if (error) {
                                 reject(response.generate(true, 'unable to save the user', 400, null))
                             } else {
                                 let user = newUser.toObject();
