@@ -34,7 +34,7 @@ let userSchema = new Schema({
   },
   noteList: {
     type: Array,
-    default:'';
+    default:''
   }
 
 })
