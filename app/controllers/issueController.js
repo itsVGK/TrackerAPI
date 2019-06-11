@@ -92,6 +92,7 @@ let signupFunction = (req, res) => {
                             createdOn: timeLib.now()
                         })
                         console.log(newUser)
+                        newUser.markModified();
                         newUser.save((err, newUser) => {
                             if (err) {
                                 reject(response.generate(true, 'unable to save the user', 400, null))
