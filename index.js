@@ -87,10 +87,6 @@ function onListening() {
         : 'port' + addr.port;
     ('Listening on ' + bind);
     console.log('server on Listening')
-    // let db = mongoose.connect(appConfig.db.uri, 
-    //     {useNewUrlParser:true})
-    //     .then(()=>console.log*'MongoDb Connected')
-    //     .catch(err=>console.log(err));
     let db = mongoose.connect(appConfig.db.uri);
 }
 
