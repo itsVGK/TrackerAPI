@@ -97,6 +97,8 @@ let signupFunction = (req, res) => {
                             console.log(error, newUserRet)
                             if (error) {
                                 reject(response.generate(true, 'unable to save the user', 400, null))
+                            }else if(check.isEmpty(newUserRet)){
+                                reject(response.generate(true, 'user list is empty', 400, null));
                             } else {
                                 let user = newUser.toObject();
                                 resolve(user);
