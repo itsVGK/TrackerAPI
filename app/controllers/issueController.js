@@ -94,7 +94,7 @@ let signupFunction = (req, res) => {
                         console.log(newUser)
                         newUser.markModified();
                         newUser.save((error, newUserRet) => {
-                            console.log(error, newUserRet)
+                            console.log('console error ', error, newUserRet)
                             if (error) {
                                 reject(response.generate(true, 'unable to save the user', 400, null))
                             }else if(check.isEmpty(newUserRet)){
