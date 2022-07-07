@@ -9,7 +9,7 @@
     "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
     "helmet": "^3.18.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.25",
     "mongoose": "^5.5.13",
     "morgan": "^1.9.1",
